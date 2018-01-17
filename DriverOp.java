@@ -20,6 +20,7 @@ public class DriverOp extends LinearOpMode {
     private DcMotor rightDriveBack = null;
     private DcMotor leftDriveBack = null;
     private DcMotor liftMotor = null;
+    private DcMotor extender = null;
     //private DcMotor extendingMotor = null;
     private DcMotor mainClamp = null;
     private Servo left = null;
@@ -38,6 +39,7 @@ public class DriverOp extends LinearOpMode {
         leftDriveFront = hardwareMap.get(DcMotor.class, "left_drive_front");
         leftDriveBack = hardwareMap.get(DcMotor.class, "left_drive_back");
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
+        extender = harwareMap.get(DcMotor.class, "extender");
         //extendingMotor = hardwareMap.get(DcMotor.class, "left-drive_extend");
         left = hardwareMap.get(Servo.class, "left_hand");
         right = hardwareMap.get(Servo.class, "right_hand");
@@ -47,7 +49,7 @@ public class DriverOp extends LinearOpMode {
         leftDriveFront.setDirection(DcMotor.Direction.REVERSE);
         leftDriveBack.setDirection(DcMotor.Direction.REVERSE);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        //extendingMotor.setDirection(DcMotor.Direction.FORWARD);
+        extender.setDirection(DcMotor.Direction.FORWARD);
 
         //wait for program start
         waitForStart();
@@ -63,6 +65,7 @@ public class DriverOp extends LinearOpMode {
             double leftPowerBack;
             double liftPower;
             double extPower;
+            double extenderPower;
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
             double lift = -gamepad2.left_stick_y;
@@ -77,6 +80,7 @@ public class DriverOp extends LinearOpMode {
             leftDriveFront.setPower(leftPowerFront);
             leftDriveBack.setPower(leftPowerBack);
             liftMotor.setPower(liftPower);
+            extender.setPower(extenderPower);
             //lift component
             if (gamepad2.left_bumper) {
                 left.setPosition(0.5);
@@ -88,6 +92,10 @@ public class DriverOp extends LinearOpMode {
             }
             if (gamepad2.a) {
                 release.setPosition(1);
+            }
+            if (gamepad2.x) {
+                extenderPower = 1.0;
+                sleep();
             }
             //update telemetry
             telemetry.addData("Status", "Run Time: " + runtime.toString());
