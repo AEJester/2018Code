@@ -26,7 +26,7 @@ public class DriverOp extends LinearOpMode {
     private Servo left = null;
     private Servo right = null;
     private Servo release = null;
-
+    public boolean hasExtended = false;
     public void runOpMode() {
 
         //update status
@@ -94,8 +94,15 @@ public class DriverOp extends LinearOpMode {
                 release.setPosition(1);
             }
             if (gamepad2.x) {
-                extenderPower = 1.0;
-                sleep();
+                if (hasExtended) {
+                    extendedPower = -1.0;
+                    sleep(5000);
+                    hasExtended = false;
+                } else if (!hasExtended) {
+                    extenderPower = 1.0;
+                    sleep(5000);
+                    hasExtended = true;
+                }
             }
             //update telemetry
             telemetry.addData("Status", "Run Time: " + runtime.toString());
